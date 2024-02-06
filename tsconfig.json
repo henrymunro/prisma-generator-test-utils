@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "declarationDir": "dist/types",
+    "target": "ES2019",
+    "moduleResolution": "Node",
+    "module": "commonjs",
+    "lib": ["esnext", "dom"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": ["node_modules", "__tests__", "dist", "test-output", "**/*.test.ts"]
+}

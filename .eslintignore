@@ -1,0 +1,10 @@
+# external dependancies
+node_modules
+**/node_modules/
+
+dist
+
+jest_config
+test-output
+
+__tests__

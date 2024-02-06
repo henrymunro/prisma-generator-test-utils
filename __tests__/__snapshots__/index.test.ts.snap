@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It generates __testing__/prisma-generated/index.ts matching the snapshot 1`] = `
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+export * from './seed';
+export * from './mockClient';
+"
+`;
+
+exports[`It generates __testing__/prisma-generated/mockClient.ts matching the snapshot 1`] = `
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+export function prismaDelegateMock() {
+  return {
+    findUnique: jest.fn(),
+    findFirst: jest.fn(),
+    findMany: jest.fn(),
+    create: jest.fn(),
+    createMany: jest.fn(),
+    delete: jest.fn(),
+    update: jest.fn(),
+    deleteMany: jest.fn(),
+    updateMany: jest.fn(),
+    upsert: jest.fn(),
+    count: jest.fn(),
+    aggregate: jest.fn(),
+    groupBy: jest.fn(),
+  };
+}
+
+export function makePrismaTransactionClientMock() {
+  return {
+    role: prismaDelegateMock(),
+    user: prismaDelegateMock(),
+  };
+}
+
+export function makePrismaClientMock() {
+  const mock = makePrismaTransactionClientMock();
+  return {
+    $transaction: (funcOrArr: Function | Array<any>) =>
+      Array.isArray(funcOrArr) ? Promise.all(funcOrArr) : funcOrArr(mock),
+    $queryRaw: jest.fn(),
+    $queryRawUnsafe: jest.fn(),
+    $executeRaw: jest.fn(),
+    $executeRawUnsafe: jest.fn(),
+    ...mock,
+  };
+}
+"
+`;
+
+exports[`It generates __testing__/prisma-generated/seed.ts matching the snapshot 1`] = `
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+import * as faker from 'faker';
+import { v4 as uuid } from 'uuid';
+import { Prisma, PrismaClient, RoleType, Role, User } from '.prisma/client';
+
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with \\"FATAL: sorry, too many clients already\\" failures
+// @ts-ignore
+const prisma: PrismaClient = global.prisma || (global.prisma = new PrismaClient());
+
+type ValuesOrFunctions<T> = {
+  [key in keyof T]: T[key] | ((index: number) => T[key]);
+};
+
+function getInputForIndex<T>(index: number, input: Partial<ValuesOrFunctions<T>>) {
+  const inputKeys = Object.keys(input) as Array<keyof T>;
+
+  const mappedInput: Partial<T> = {};
+
+  inputKeys.forEach((key) => {
+    const valueOrFunction = input[key];
+
+    mappedInput[key] =
+      typeof valueOrFunction === 'function' ? valueOrFunction(index) : valueOrFunction;
+  });
+
+  return mappedInput;
+}
+
+/**
+ * Makes a single Role object and returns it.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required Role values will be randomly generated for you
+ * const randomRole = makeRole();
+ *
+ * // or pass an object to override any values
+ * const customRole = makeRole({
+ *   id: 'something',
+ *   // pass any other Role fields here
+ * })
+ * \`\`\`
+ */
+export function makeRole(override?: Partial<Role>): Role {
+  return {
+    id: override?.id ?? 'seeded_for_test_' + uuid(),
+    optionalValue: override?.optionalValue ?? null,
+    datetimeValue: override?.datetimeValue ?? faker.date.recent(),
+    intValue: override?.intValue ?? faker.datatype.number(),
+    stringValue: override?.stringValue ?? faker.lorem.word(),
+    enumValue: override?.enumValue ?? RoleType.ADMIN,
+    decimalValue: override?.decimalValue ?? new Prisma.Decimal(10),
+    booleanValue: override?.booleanValue ?? false,
+    stringWithDefault: override?.stringWithDefault ?? 'default',
+    booleanWithDefault: override?.booleanWithDefault ?? true,
+    dateWithNowDefault: override?.dateWithNowDefault ?? new Date(),
+  };
+}
+
+/**
+ * Seeds a single Role to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required Role values will be randomly generated for you
+ * const randomRole = await seedRole();
+ *
+ * // or pass an object to override any values
+ * const customRole = await seedRole({
+ *   id: 'something',
+ *   // pass any other Role fields here
+ * })
+ * \`\`\`
+ */
+export async function seedRole(override?: Partial<Role>): Promise<Role> {
+  const data = makeRole(override);
+
+  return prisma.role.create({ data });
+}
+
+/**
+ * Seeds multiple Roles to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all required fields will be randomly generated for you, these fields will be different for each Role
+ * const tenRandomRole = await seedNRoles(10);
+ *
+ * // or pass an override to specify values that should be applied to each Role
+ * const tenRolesWithTheSameId = await seedNRoles(10, {
+ *   id: 'something', // this might fail if you have a unique constraint on the id field, but you get the idea
+ *   // pass any other Role fields here
+ * })
+ *
+ * // or pass an override function to specify different values for each Role
+ * const tenRolesWithTheDifferentIds = await seedNRoles(10, {
+ *   id: (index) => \`some-id-\${index}\`,
+ * })
+ * \`\`\`
+ */
+export async function seedNRoles(
+  n: number,
+  override: Partial<ValuesOrFunctions<Role>> = {},
+): Promise<Role[]> {
+  const data = Array(n)
+    .fill(null)
+    .map((_, i) => makeRole(getInputForIndex(i, override)));
+
+  await prisma.role.createMany({ data });
+
+  return data;
+}
+
+/**
+ * Performs a cascading delete on all Roles that have been written to the DB by the seed functions.
+ *
+ * This works because all of the seed functions append a 'seeded_for_test_' prefix to the primary key field; we use this to delete these records.
+ *
+ * \`\`\`ts
+ * // removes all Roles that have been created by the seed functions, but doesn't touch the remaining Roles
+ * await deleteSeededRoles();
+ * \`\`\`
+ */
+export async function deleteSeededRoles(): Promise<void> {
+  // performs a cascading delete
+  // the prisma client doesn't do this at the moment (but is due to be added in a future release)
+  await prisma.$executeRaw\`'DELETE FROM \\"Role\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`;
+}
+
+/**
+ * Makes a single User object and returns it.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required User values will be randomly generated for you
+ * const randomUser = makeUser();
+ *
+ * // or pass an object to override any values
+ * const customUser = makeUser({
+ *   id: 'something',
+ *   // pass any other User fields here
+ * })
+ * \`\`\`
+ */
+export function makeUser(override?: Partial<User>): User {
+  return {
+    id: override?.id ?? 'seeded_for_test_' + uuid(),
+    email: override?.email ?? faker.lorem.word(),
+    password: override?.password ?? faker.lorem.word(),
+    role_id: override?.role_id ?? faker.lorem.word(),
+  };
+}
+
+/**
+ * Seeds a single User to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required User values will be randomly generated for you
+ * const randomUser = await seedUser();
+ *
+ * // or pass an object to override any values
+ * const customUser = await seedUser({
+ *   id: 'something',
+ *   // pass any other User fields here
+ * })
+ * \`\`\`
+ */
+export async function seedUser(override?: Partial<User>): Promise<User> {
+  const data = makeUser(override);
+
+  return prisma.user.create({ data });
+}
+
+/**
+ * Seeds multiple Users to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all required fields will be randomly generated for you, these fields will be different for each User
+ * const tenRandomUser = await seedNUsers(10);
+ *
+ * // or pass an override to specify values that should be applied to each User
+ * const tenUsersWithTheSameId = await seedNUsers(10, {
+ *   id: 'something', // this might fail if you have a unique constraint on the id field, but you get the idea
+ *   // pass any other User fields here
+ * })
+ *
+ * // or pass an override function to specify different values for each User
+ * const tenUsersWithTheDifferentIds = await seedNUsers(10, {
+ *   id: (index) => \`some-id-\${index}\`,
+ * })
+ * \`\`\`
+ */
+export async function seedNUsers(
+  n: number,
+  override: Partial<ValuesOrFunctions<User>> = {},
+): Promise<User[]> {
+  const data = Array(n)
+    .fill(null)
+    .map((_, i) => makeUser(getInputForIndex(i, override)));
+
+  await prisma.user.createMany({ data });
+
+  return data;
+}
+
+/**
+ * Performs a cascading delete on all Users that have been written to the DB by the seed functions.
+ *
+ * This works because all of the seed functions append a 'seeded_for_test_' prefix to the primary key field; we use this to delete these records.
+ *
+ * \`\`\`ts
+ * // removes all Users that have been created by the seed functions, but doesn't touch the remaining Users
+ * await deleteSeededUsers();
+ * \`\`\`
+ */
+export async function deleteSeededUsers(): Promise<void> {
+  // performs a cascading delete
+  // the prisma client doesn't do this at the moment (but is due to be added in a future release)
+  await prisma.$executeRaw\`'DELETE FROM \\"User\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`;
+}
+"
+`;

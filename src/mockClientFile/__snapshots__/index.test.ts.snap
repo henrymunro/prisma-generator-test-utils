@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders the mock client as expected 1`] = `
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+export function prismaDelegateMock() {
+  return {
+    findUnique: jest.fn(),
+    findFirst: jest.fn(),
+    findMany: jest.fn(),
+    create: jest.fn(),
+    createMany: jest.fn(),
+    delete: jest.fn(),
+    update: jest.fn(),
+    deleteMany: jest.fn(),
+    updateMany: jest.fn(),
+    upsert: jest.fn(),
+    count: jest.fn(),
+    aggregate: jest.fn(),
+    groupBy: jest.fn(),
+  };
+}
+
+export function makePrismaTransactionClientMock() {
+    return { 
+      user: prismaDelegateMock(),
+      post: prismaDelegateMock(),  
+    }
+}
+
+export function makePrismaClientMock() {
+  const mock = makePrismaTransactionClientMock();
+  return {
+    $transaction: (funcOrArr: Function | Array<any>) =>
+      Array.isArray(funcOrArr) ? Promise.all(funcOrArr) : funcOrArr(mock),
+    $queryRaw: jest.fn(),
+    $queryRawUnsafe: jest.fn(),
+    $executeRaw: jest.fn(),
+    $executeRawUnsafe: jest.fn(),
+    ...mock,
+  };
+}
+"
+`;

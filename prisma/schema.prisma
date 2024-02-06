@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator testUtilGenerator {
+  provider = "ts-node ./src/index.ts"
+  output   = "../test-output"
+}
+
+enum RoleType {
+  ADMIN
+  USER
+}
+
+model Role {
+  id String @id
+
+  optionalValue String?
+  datetimeValue DateTime
+  intValue      Int
+  stringValue   String
+  enumValue     RoleType
+  decimalValue  Decimal  @db.Decimal(65, 2)
+  booleanValue  Boolean
+
+  stringWithDefault  String   @default("default")
+  booleanWithDefault Boolean  @default(true)
+  dateWithNowDefault DateTime @default(now())
+
+  User User[]
+}
+
+model User {
+  id       Int    @id
+  email    String
+  password String
+
+  // Ensure realtions are ignored
+  role_id String
+  role    Role   @relation(fields: [role_id], references: [id])
+
+  @@unique([email])
+}

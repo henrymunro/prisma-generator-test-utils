@@ -1,0 +1,36 @@
+// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+import * as faker from 'faker';
+import { v4 as uuid } from 'uuid';
+import { 
+  Prisma,
+  PrismaClient,{% for item in imports %}
+  {{ item }},{% endfor %}
+} from '.prisma/client';
+
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures  
+// @ts-ignore
+const prisma: PrismaClient = global.prisma || (global.prisma = new PrismaClient());
+
+type ValuesOrFunctions<T> = {
+  [key in keyof T]: T[key] | ((index: number) => T[key]);
+};
+
+function getInputForIndex<T>(index: number, input: Partial<ValuesOrFunctions<T>>) {
+  const inputKeys = Object.keys(input) as Array<keyof T>;
+
+  const mappedInput: Partial<T> = {};
+
+  inputKeys.forEach((key) => {
+    const valueOrFunction = input[key];
+
+    mappedInput[key] =
+      typeof valueOrFunction === 'function' ? valueOrFunction(index) : valueOrFunction;
+  });
+
+  return mappedInput;
+}
+
+{% for item in modelFunctions %}
+{{ item }}
+{% endfor %}

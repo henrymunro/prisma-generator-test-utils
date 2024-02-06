@@ -1,0 +1,72 @@
+version: 2.1
+orbs:
+  rsync: germade/rsync@0.0.1
+executors:
+  node_executor:
+    docker:
+      - image: cimg/node:14.17
+jobs:
+  build_lint_test:
+    executor: node_executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-{{ checksum "yarn.lock" }}
+            - v1
+      - attach_workspace:
+          at: ~/project
+      - run: sudo apt update
+      - run: sudo apt install rsync
+      - run: yarn
+      - run: yarn build
+      # TODO: get linting working and reenable this
+      # - run: yarn lint
+      - run: yarn test:unit
+      - run: yarn test:integration
+      - save_cache:
+          key: v1-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - dist
+
+  publish:
+    executor: node_executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-{{ checksum "yarn.lock" }}
+            - v1
+      - attach_workspace:
+          at: ~/project
+      - add_ssh_keys:
+          fingerprints:
+            - 'c6:b1:44:78:9e:55:b8:57:d8:2c:df:74:11:98:26:13'
+      - run:
+          name: Configure Git Credentials
+          command: |
+            git config --global user.email "todo"
+            git config --global user.name "Circle CI"
+      - run:
+          name: Create ~/.npmrc with $NPM_TOKEN
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Version, tag and publish
+          command: |
+            yarn release
+            git push --follow-tags origin $(git branch --show-current) && npm publish
+workflows:
+  main_workflow:
+    jobs:
+      - build_lint_test
+      - publish:
+          context: npm
+          filters:
+            branches:
+              only: main
+          requires:
+            - build_lint_test

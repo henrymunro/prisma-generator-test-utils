@@ -1,0 +1,84 @@
+/**
+ * Makes a single {{ name }} object and returns it.
+ *
+ * ```ts
+ * // pass no override and all the required {{ name }} values will be randomly generated for you
+ * const random{{ name }} = make{{ name }}(); 
+ * 
+ * // or pass an object to override any values
+ * const custom{{ name }} = make{{ name }}({
+ *   id: 'something', 
+ *   // pass any other {{ name }} fields here
+ * })
+ * ```
+ */
+export function make{{ name }}(override?: Partial<{{ name }}>): {{ name }} {
+  return { {% for item in values %}
+    {{ item.name }}: override?.{{ item.name }} ?? {{ item.defaulter }},{% endfor %}
+  }
+}
+
+/**
+ * Seeds a single {{ name }} to the DB.
+ *
+ * ```ts
+ * // pass no override and all the required {{ name }} values will be randomly generated for you
+ * const random{{ name }} = await seed{{ name }}(); 
+ * 
+ * // or pass an object to override any values
+ * const custom{{ name }} = await seed{{ name }}({
+ *   id: 'something', 
+ *   // pass any other {{ name }} fields here
+ * })
+ * ```
+ */
+export async function seed{{ name }}(override?: Partial<{{ name }}>): Promise<{{ name }}> {
+  const data = make{{ name }}(override);
+
+  return prisma.{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.create({ data });
+}
+
+/**
+ * Seeds multiple {{ name }}s to the DB.
+ *
+ * ```ts
+ * // pass no override and all required fields will be randomly generated for you, these fields will be different for each {{ name }}
+ * const tenRandom{{ name }} = await seedN{{ name }}s(10);
+ *
+ * // or pass an override to specify values that should be applied to each {{ name }}
+ * const ten{{ name }}sWithTheSameId = await seedN{{ name }}s(10, {
+ *   id: 'something', // this might fail if you have a unique constraint on the id field, but you get the idea
+ *   // pass any other {{ name }} fields here
+ * })
+ *
+ * // or pass an override function to specify different values for each {{ name }}
+ * const ten{{ name }}sWithTheDifferentIds = await seedN{{ name }}s(10, {
+ *   id: (index) => `some-id-${index}`,
+ * })
+ * ```
+ */
+export async function seedN{{ name }}s(n: number, override: Partial<ValuesOrFunctions<{{ name }}>> = {}): Promise<{{ name }}[]> {
+  const data = Array(n)
+                .fill(null)
+                .map((_, i) => make{{ name }}(getInputForIndex(i, override)));
+
+  await prisma.{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.createMany({ data });
+
+  return data;
+}
+
+/**
+ * Performs a cascading delete on all {{ name }}s that have been written to the DB by the seed functions.
+ *
+ * This works because all of the seed functions append a '{{ idPrefix }}' prefix to the primary key field; we use this to delete these records.
+ *
+ * ```ts
+ * // removes all {{ name }}s that have been created by the seed functions, but doesn't touch the remaining {{ name }}s
+ * await deleteSeeded{{ name }}s();
+ * ```
+ */
+export async function deleteSeeded{{ name }}s(): Promise<void> {
+  // performs a cascading delete 
+  // the prisma client doesn't do this at the moment (but is due to be added in a future release)
+  await prisma.$executeRaw`'DELETE FROM "{{ name }}" where {{ primaryKey }} LIKE \'{{ idPrefix }}%\''`; 
+}

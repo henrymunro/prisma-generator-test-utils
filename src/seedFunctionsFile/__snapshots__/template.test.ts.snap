@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renderFileTemplate 1`] = `
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+import * as faker from 'faker';
+import { v4 as uuid } from 'uuid';
+import { 
+  Prisma,
+  PrismaClient,
+  User,
+  Role,
+} from '.prisma/client';
+
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with \\"FATAL: sorry, too many clients already\\" failures  
+// @ts-ignore
+const prisma: PrismaClient = global.prisma || (global.prisma = new PrismaClient());
+
+type ValuesOrFunctions<T> = {
+  [key in keyof T]: T[key] | ((index: number) => T[key]);
+};
+
+function getInputForIndex<T>(index: number, input: Partial<ValuesOrFunctions<T>>) {
+  const inputKeys = Object.keys(input) as Array<keyof T>;
+
+  const mappedInput: Partial<T> = {};
+
+  inputKeys.forEach((key) => {
+    const valueOrFunction = input[key];
+
+    mappedInput[key] =
+      typeof valueOrFunction === 'function' ? valueOrFunction(index) : valueOrFunction;
+  });
+
+  return mappedInput;
+}
+
+
+functions for model 1
+
+functions for model 2
+"
+`;
+
+exports[`renderModelFunctionTemplate 1`] = `
+"/**
+ * Makes a single User object and returns it.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required User values will be randomly generated for you
+ * const randomUser = makeUser(); 
+ * 
+ * // or pass an object to override any values
+ * const customUser = makeUser({
+ *   id: 'something', 
+ *   // pass any other User fields here
+ * })
+ * \`\`\`
+ */
+export function makeUser(override?: Partial<User>): User {
+  return { 
+    name: override?.name ?? faker.name.firstName(),
+    email: override?.email ?? faker.internet.email(),
+  }
+}
+
+/**
+ * Seeds a single User to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all the required User values will be randomly generated for you
+ * const randomUser = await seedUser(); 
+ * 
+ * // or pass an object to override any values
+ * const customUser = await seedUser({
+ *   id: 'something', 
+ *   // pass any other User fields here
+ * })
+ * \`\`\`
+ */
+export async function seedUser(override?: Partial<User>): Promise<User> {
+  const data = makeUser(override);
+
+  return prisma.user.create({ data });
+}
+
+/**
+ * Seeds multiple Users to the DB.
+ *
+ * \`\`\`ts
+ * // pass no override and all required fields will be randomly generated for you, these fields will be different for each User
+ * const tenRandomUser = await seedNUsers(10);
+ *
+ * // or pass an override to specify values that should be applied to each User
+ * const tenUsersWithTheSameId = await seedNUsers(10, {
+ *   id: 'something', // this might fail if you have a unique constraint on the id field, but you get the idea
+ *   // pass any other User fields here
+ * })
+ *
+ * // or pass an override function to specify different values for each User
+ * const tenUsersWithTheDifferentIds = await seedNUsers(10, {
+ *   id: (index) => \`some-id-\${index}\`,
+ * })
+ * \`\`\`
+ */
+export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<User>> = {}): Promise<User[]> {
+  const data = Array(n)
+                .fill(null)
+                .map((_, i) => makeUser(getInputForIndex(i, override)));
+
+  await prisma.user.createMany({ data });
+
+  return data;
+}
+
+/**
+ * Performs a cascading delete on all Users that have been written to the DB by the seed functions.
+ *
+ * This works because all of the seed functions append a 'seeded_for_test_' prefix to the primary key field; we use this to delete these records.
+ *
+ * \`\`\`ts
+ * // removes all Users that have been created by the seed functions, but doesn't touch the remaining Users
+ * await deleteSeededUsers();
+ * \`\`\`
+ */
+export async function deleteSeededUsers(): Promise<void> {
+  // performs a cascading delete 
+  // the prisma client doesn't do this at the moment (but is due to be added in a future release)
+  await prisma.$executeRaw\`'DELETE FROM \\"User\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
+}"
+`;
