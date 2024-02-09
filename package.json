@@ -1,7 +1,8 @@
 {
-  "version": "0.0.20",
+  "version": "0.0.22",
   "name": "prisma-generator-test-utils",
   "main": "dist/index.js",
+  "license": "MIT",
   "bin": {
     "prisma-generate-test-utils": "dist/index.js"
   },
@@ -13,7 +14,8 @@
     "lint:eslint": "eslint --ext .ts,.js --cache --ignore-path .eslintignore .",
     "release": "standard-version --releaseCommitMessageFormat \"chore(release): {{currentTag}} [ci skip]\"",
     "test:unit": "jest --projects jest_config/unit.config.js",
-    "test:integration": "jest --projects jest_config/integration.config.js"
+    "test:integration": "jest --projects jest_config/integration.config.js",
+    "publish": "yarn build && yarn release && git push --follow-tags origin main && npm publish"
   },
   "dependencies": {
     "@prisma/generator-helper": "5.9.1",
