@@ -44,20 +44,23 @@ generatorHandler({
         recursive: true,
       });
 
-      await fs.promises.writeFile(outputFilePath, await prettier.format(fileContents, prettierOptions));
+      await fs.promises.writeFile(
+        outputFilePath,
+        await prettier.format(fileContents, prettierOptions),
+      );
     }
 
     try {
       const { models, enums } = options.dmmf.datamodel;
 
       const seedFunctionsFileContents = buildSeedFunctionsFile({ models, enums });
-      await writeTSFile('__testing__/prisma-generated/seed.ts', seedFunctionsFileContents);
+      await writeTSFile('seed.ts', seedFunctionsFileContents);
 
       const mockClientFileContents = buildMockClientFile({ models });
-      await writeTSFile('__testing__/prisma-generated/mockClient.ts', mockClientFileContents);
+      await writeTSFile('mockClient.ts', mockClientFileContents);
 
       await writeTSFile(
-        '__testing__/prisma-generated/index.ts',
+        'index.ts',
         `
       // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 

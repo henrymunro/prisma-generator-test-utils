@@ -5,7 +5,7 @@ datasource db {
 
 generator testUtilGenerator {
   provider = "ts-node ./src/index.ts"
-  output   = "../test-output"
+  output   = "../test-output/__testing__/prisma-generated"
 }
 
 enum RoleType {
