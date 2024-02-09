@@ -1,9 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renders the mock client as expected 1`] = `
-"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+"/* eslint-disable */
+// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-export function prismaDelegateMock() {
+/**
+ * A mocked of \`prisma.<model_name>\` using jest.fn() for all methods.
+ */
+export function prismaEntityMock() {
   return {
     findUnique: jest.fn(),
     findFirst: jest.fn(),
@@ -21,13 +25,23 @@ export function prismaDelegateMock() {
   };
 }
 
+/**
+ * A mocked version of the client returned by \`prisma.$transaction\`.
+ *
+ * The methods for each model (e.g. \`prisma.<model_name>.create\`) are jest.fn().
+ */
 export function makePrismaTransactionClientMock() {
     return { 
-      user: prismaDelegateMock(),
-      post: prismaDelegateMock(),  
+      user: prismaEntityMock(),
+      post: prismaEntityMock(),  
     }
 }
 
+/**
+ * A mocked version of prisma client.
+ *
+ * The methods for each model (e.g. \`prisma.<model_name>.create\`) are jest.fn().
+ */
 export function makePrismaClientMock() {
   const mock = makePrismaTransactionClientMock();
   return {

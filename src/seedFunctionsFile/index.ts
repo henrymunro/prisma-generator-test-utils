@@ -16,6 +16,7 @@ const fakerMap = {
   DateTime: 'faker.date.recent()',
   Boolean: 'false',
   Decimal: 'new Prisma.Decimal(10)',
+  Float: 'faker.datatype.number()',
 };
 
 export function getDefaultingFunctionForField(
@@ -36,9 +37,17 @@ export function getDefaultingFunctionForField(
     return JSON.stringify(field.default);
   }
 
+  if (field.type === 'Json') {
+    return 'Prisma.JsonNull';
+  }
+
   // Don't attempt to generate optional fields as these can be difficult to unset
   if (!field.isRequired) {
     return 'null';
+  }
+
+  if (field.isList) {
+    return '[]';
   }
 
   if (typeof field.type !== 'string') {
@@ -78,7 +87,7 @@ export function assembleFunctionForModel(model: DMMF.Model, enums: Enums, onEnum
   });
 }
 
-export default function buildFile({ models, enums }: DMMF.Datamodel) {
+export default function buildFile({ models, enums }: Pick<DMMF.Datamodel, 'models' | 'enums'>) {
   const usedEnums = [];
 
   const onEnumUsed = (enumUsed: string) => {

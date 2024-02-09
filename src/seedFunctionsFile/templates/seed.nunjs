@@ -1,16 +1,23 @@
+/* eslint-disable */
 // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-import * as faker from 'faker';
-import { v4 as uuid } from 'uuid';
 import { 
   Prisma,
   PrismaClient,{% for item in imports %}
   {{ item }},{% endfor %}
-} from '.prisma/client';
+} from '@prisma/client';
+import { faker } from '@faker-js/faker';
+import { v4 as uuid } from 'uuid';
 
 // Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures  
 // @ts-ignore
-const prisma: PrismaClient = global.prisma || (global.prisma = new PrismaClient());
+const getPrisma = (): PrismaClient =>
+    global.prisma || (global.prisma = new PrismaClient());
+
+export const setPrismaClient = (prisma: PrismaClient) => {
+    // @ts-ignore
+    global.prisma = prisma;
+};
 
 type ValuesOrFunctions<T> = {
   [key in keyof T]: T[key] | ((index: number) => T[key]);

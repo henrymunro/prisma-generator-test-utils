@@ -12,7 +12,7 @@
  * })
  * ```
  */
-export function make{{ name }}(override?: Partial<{{ name }}>): {{ name }} {
+export function make{{ name }}(override?: Partial<{{ name }}>): Prisma.{{ name }}UncheckedCreateInput {
   return { {% for item in values %}
     {{ item.name }}: override?.{{ item.name }} ?? {{ item.defaulter }},{% endfor %}
   }
@@ -32,10 +32,12 @@ export function make{{ name }}(override?: Partial<{{ name }}>): {{ name }} {
  * })
  * ```
  */
-export async function seed{{ name }}(override?: Partial<{{ name }}>): Promise<{{ name }}> {
+export async function seed{{ name }}(override?: Partial<{{ name }}>): Promise<Prisma.{{ name }}UncheckedCreateInput> {
   const data = make{{ name }}(override);
 
-  return prisma.{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.create({ data });
+  await getPrisma().{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.create({ data });
+
+  return data
 }
 
 /**
@@ -57,12 +59,12 @@ export async function seed{{ name }}(override?: Partial<{{ name }}>): Promise<{{
  * })
  * ```
  */
-export async function seedN{{ name }}s(n: number, override: Partial<ValuesOrFunctions<{{ name }}>> = {}): Promise<{{ name }}[]> {
+export async function seedN{{ name }}s(n: number, override: Partial<ValuesOrFunctions<{{ name }}>> = {}): Promise<Prisma.{{ name }}UncheckedCreateInput[]> {
   const data = Array(n)
                 .fill(null)
                 .map((_, i) => make{{ name }}(getInputForIndex(i, override)));
 
-  await prisma.{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.createMany({ data });
+  await getPrisma().{{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}.createMany({ data });
 
   return data;
 }
@@ -80,5 +82,5 @@ export async function seedN{{ name }}s(n: number, override: Partial<ValuesOrFunc
 export async function deleteSeeded{{ name }}s(): Promise<void> {
   // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await prisma.$executeRaw`'DELETE FROM "{{ name }}" where {{ primaryKey }} LIKE \'{{ idPrefix }}%\''`; 
+  await getPrisma().$executeRaw`'DELETE FROM "{{ name }}" where {{ primaryKey }} LIKE \'{{ idPrefix }}%\''`; 
 }

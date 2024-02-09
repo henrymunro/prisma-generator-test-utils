@@ -1,20 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renderFileTemplate 1`] = `
-"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+"/* eslint-disable */
+// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-import * as faker from 'faker';
-import { v4 as uuid } from 'uuid';
 import { 
   Prisma,
   PrismaClient,
   User,
   Role,
-} from '.prisma/client';
+} from '@prisma/client';
+import { faker } from '@faker-js/faker';
+import { v4 as uuid } from 'uuid';
 
-// Reuse client wherever possible. Without this when running tests in watch mode you can end up with \\"FATAL: sorry, too many clients already\\" failures  
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures  
 // @ts-ignore
-const prisma: PrismaClient = global.prisma || (global.prisma = new PrismaClient());
+const getPrisma = (): PrismaClient =>
+    global.prisma || (global.prisma = new PrismaClient());
+
+export const setPrismaClient = (prisma: PrismaClient) => {
+    // @ts-ignore
+    global.prisma = prisma;
+};
 
 type ValuesOrFunctions<T> = {
   [key in keyof T]: T[key] | ((index: number) => T[key]);
@@ -57,7 +64,7 @@ exports[`renderModelFunctionTemplate 1`] = `
  * })
  * \`\`\`
  */
-export function makeUser(override?: Partial<User>): User {
+export function makeUser(override?: Partial<User>): Prisma.UserUncheckedCreateInput {
   return { 
     name: override?.name ?? faker.name.firstName(),
     email: override?.email ?? faker.internet.email(),
@@ -78,10 +85,12 @@ export function makeUser(override?: Partial<User>): User {
  * })
  * \`\`\`
  */
-export async function seedUser(override?: Partial<User>): Promise<User> {
+export async function seedUser(override?: Partial<User>): Promise<Prisma.UserUncheckedCreateInput> {
   const data = makeUser(override);
 
-  return prisma.user.create({ data });
+  await getPrisma().user.create({ data });
+
+  return data
 }
 
 /**
@@ -103,12 +112,12 @@ export async function seedUser(override?: Partial<User>): Promise<User> {
  * })
  * \`\`\`
  */
-export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<User>> = {}): Promise<User[]> {
+export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<User>> = {}): Promise<Prisma.UserUncheckedCreateInput[]> {
   const data = Array(n)
                 .fill(null)
                 .map((_, i) => makeUser(getInputForIndex(i, override)));
 
-  await prisma.user.createMany({ data });
+  await getPrisma().user.createMany({ data });
 
   return data;
 }
@@ -126,6 +135,6 @@ export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<
 export async function deleteSeededUsers(): Promise<void> {
   // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await prisma.$executeRaw\`'DELETE FROM \\"User\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
+  await getPrisma().$executeRaw\`'DELETE FROM "User" where id LIKE \\'seeded_for_test_%\\''\`; 
 }"
 `;

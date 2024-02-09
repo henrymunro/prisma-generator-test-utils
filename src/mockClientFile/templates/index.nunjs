@@ -1,6 +1,10 @@
+/* eslint-disable */
 // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-export function prismaDelegateMock() {
+/**
+ * A mocked of `prisma.<model_name>` using jest.fn() for all methods.
+ */
+export function prismaEntityMock() {
   return {
     findUnique: jest.fn(),
     findFirst: jest.fn(),
@@ -18,12 +22,22 @@ export function prismaDelegateMock() {
   };
 }
 
+/**
+ * A mocked version of the client returned by `prisma.$transaction`.
+ *
+ * The methods for each model (e.g. `prisma.<model_name>.create`) are jest.fn().
+ */
 export function makePrismaTransactionClientMock() {
     return { {% for name in modelNames %}
-      {{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}: prismaDelegateMock(),{% endfor %}  
+      {{ name.charAt(0).toLowerCase() }}{{ name.slice(1) }}: prismaEntityMock(),{% endfor %}  
     }
 }
 
+/**
+ * A mocked version of prisma client.
+ *
+ * The methods for each model (e.g. `prisma.<model_name>.create`) are jest.fn().
+ */
 export function makePrismaClientMock() {
   const mock = makePrismaTransactionClientMock();
   return {

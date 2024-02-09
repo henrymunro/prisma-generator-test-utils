@@ -44,7 +44,7 @@ generatorHandler({
         recursive: true,
       });
 
-      await fs.promises.writeFile(outputFilePath, prettier.format(fileContents, prettierOptions));
+      await fs.promises.writeFile(outputFilePath, await prettier.format(fileContents, prettierOptions));
     }
 
     try {

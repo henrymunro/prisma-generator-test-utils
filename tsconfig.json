@@ -13,7 +13,8 @@
     "module": "commonjs",
     "lib": ["esnext", "dom"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "__tests__", "dist", "test-output", "**/*.test.ts"]
 }

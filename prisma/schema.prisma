@@ -16,13 +16,16 @@ enum RoleType {
 model Role {
   id String @id
 
-  optionalValue String?
-  datetimeValue DateTime
-  intValue      Int
-  stringValue   String
-  enumValue     RoleType
-  decimalValue  Decimal  @db.Decimal(65, 2)
-  booleanValue  Boolean
+  optionalValue     String?
+  datetimeValue     DateTime
+  intValue          Int
+  stringValue       String
+  enumValue         RoleType
+  decimalValue      Decimal  @db.Decimal(65, 2)
+  floatValue        Float
+  booleanValue      Boolean
+  jsonValue         Json
+  optionalJsonValue Json?
 
   stringWithDefault  String   @default("default")
   booleanWithDefault Boolean  @default(true)
