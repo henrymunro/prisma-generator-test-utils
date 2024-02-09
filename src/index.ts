@@ -3,7 +3,7 @@ import { generatorHandler } from '@prisma/generator-helper';
 import { parseEnvValue } from '@prisma/sdk';
 import fs from 'fs';
 import path from 'path';
-import prettier, { Options } from 'prettier';
+
 import nunjucks from 'nunjucks';
 
 import buildSeedFunctionsFile from './seedFunctionsFile';
@@ -12,7 +12,7 @@ import buildMockClientFile from './mockClientFile';
 nunjucks.configure(__dirname, { autoescape: false, throwOnUndefined: true });
 
 // TODO: do something with this, it's not nice having it hardcoded here
-const prettierOptions: Options = {
+const prettierOptions = {
   parser: 'typescript',
   printWidth: 100,
   singleQuote: true,
@@ -37,6 +37,12 @@ generatorHandler({
       throw new Error('No output was specified for Prisma Test Util Generator');
     }
 
+    const { formatOutputWithPrettier } = options.generator.config;
+
+    if (formatOutputWithPrettier !== 'true' && formatOutputWithPrettier !== undefined) {
+      throw new Error('formatOutputWithPrettier must be a boolean or undefined');
+    }
+
     async function writeTSFile(relativeFilePath: string, fileContents: string) {
       const outputFilePath = path.join(outputDir, relativeFilePath);
 
@@ -44,10 +50,14 @@ generatorHandler({
         recursive: true,
       });
 
-      await fs.promises.writeFile(
-        outputFilePath,
-        await prettier.format(fileContents, prettierOptions),
-      );
+      let formattedContents = fileContents;
+
+      if (formatOutputWithPrettier === 'true') {
+        const prettier = require('prettier');
+        formattedContents = await prettier.format(fileContents, prettierOptions);
+      }
+
+      await fs.promises.writeFile(outputFilePath, formattedContents);
     }
 
     try {
