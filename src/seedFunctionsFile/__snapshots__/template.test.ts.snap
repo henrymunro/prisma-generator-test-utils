@@ -14,14 +14,17 @@ import { faker } from '@faker-js/faker';
 import { v4 as uuid } from 'uuid';
 
 // Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures  
-// @ts-ignore
 const getPrisma = (): PrismaClient =>
+    // @ts-ignore
     global.prisma || (global.prisma = new PrismaClient());
-
+/**
+ * Sets the client that will be used by all the generated utils.
+ */
 export const setPrismaClient = (prisma: PrismaClient) => {
     // @ts-ignore
     global.prisma = prisma;
 };
+
 
 type ValuesOrFunctions<T> = {
   [key in keyof T]: T[key] | ((index: number) => T[key]);
