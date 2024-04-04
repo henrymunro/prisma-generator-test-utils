@@ -109,7 +109,7 @@ describe('getDefaultingFunctionForField', () => {
       isRequired: true,
     } as DMMF.Field;
 
-    expect(getDefaultingFunctionForField(field, enums, onEnumUsed)).toBe('faker.datatype.number()');
+    expect(getDefaultingFunctionForField(field, enums, onEnumUsed)).toBe('faker.number.int()');
   });
 
   test('datetime fields default to faker recent date function', () => {

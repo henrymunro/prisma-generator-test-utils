@@ -12,11 +12,11 @@ type OnEnumUsed = (enumName: string) => void;
 
 const fakerMap = {
   String: 'faker.lorem.word()',
-  Int: 'faker.datatype.number()',
+  Int: 'faker.number.int()',
   DateTime: 'faker.date.recent()',
   Boolean: 'false',
   Decimal: 'new Prisma.Decimal(10)',
-  Float: 'faker.datatype.number()',
+  Float: 'faker.number.float()',
 };
 
 export function getDefaultingFunctionForField(
