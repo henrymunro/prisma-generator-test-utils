@@ -11,18 +11,6 @@ import buildMockClientFile from './mockClientFile';
 
 nunjucks.configure(__dirname, { autoescape: false, throwOnUndefined: true });
 
-// TODO: do something with this, it's not nice having it hardcoded here
-const prettierOptions = {
-  parser: 'typescript',
-  printWidth: 100,
-  singleQuote: true,
-  semi: true,
-  tabWidth: 2,
-  trailingComma: 'all',
-  useTabs: false,
-  arrowParens: 'always',
-};
-
 generatorHandler({
   onManifest() {
     return {
@@ -37,12 +25,6 @@ generatorHandler({
       throw new Error('No output was specified for Prisma Test Util Generator');
     }
 
-    const { formatOutputWithPrettier } = options.generator.config;
-
-    if (formatOutputWithPrettier !== 'true' && formatOutputWithPrettier !== undefined) {
-      throw new Error('formatOutputWithPrettier must be a boolean or undefined');
-    }
-
     async function writeTSFile(relativeFilePath: string, fileContents: string) {
       const outputFilePath = path.join(outputDir, relativeFilePath);
 
@@ -50,14 +32,7 @@ generatorHandler({
         recursive: true,
       });
 
-      let formattedContents = fileContents;
-
-      if (formatOutputWithPrettier === 'true') {
-        const prettier = require('prettier');
-        formattedContents = await prettier.format(fileContents, prettierOptions);
-      }
-
-      await fs.promises.writeFile(outputFilePath, formattedContents);
+      await fs.promises.writeFile(outputFilePath, fileContents);
     }
 
     try {

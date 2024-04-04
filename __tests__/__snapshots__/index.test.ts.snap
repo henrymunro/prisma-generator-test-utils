@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`It generates __testing__/prisma-generated/index.ts matching the snapshot 1`] = `
-"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
-
-export * from './seed';
-export * from './mockClient';
 "
+      // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+
+      export * from './seed';
+      export * from './mockClient';
+      "
 `;
 
 exports[`It generates __testing__/prisma-generated/mockClient.ts matching the snapshot 1`] = `
@@ -39,10 +40,10 @@ export function prismaEntityMock() {
  * The methods for each model (e.g. \`prisma.<model_name>.create\`) are jest.fn().
  */
 export function makePrismaTransactionClientMock() {
-  return {
-    role: prismaEntityMock(),
-    user: prismaEntityMock(),
-  };
+    return { 
+      role: prismaEntityMock(),
+      user: prismaEntityMock(),  
+    }
 }
 
 /**
@@ -69,21 +70,28 @@ exports[`It generates __testing__/prisma-generated/seed.ts matching the snapshot
 "/* eslint-disable */
 // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-import { Prisma, PrismaClient, RoleType, Role, User } from '@prisma/client';
+import { 
+  Prisma,
+  PrismaClient,
+  RoleType,
+  Role,
+  User,
+} from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { v4 as uuid } from 'uuid';
 
-// Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with \\"FATAL: sorry, too many clients already\\" failures  
 const getPrisma = (): PrismaClient =>
-  // @ts-ignore
-  global.prisma || (global.prisma = new PrismaClient());
+    // @ts-ignore
+    global.prisma || (global.prisma = new PrismaClient());
 /**
  * Sets the client that will be used by all the generated utils.
  */
 export const setPrismaClient = (prisma: PrismaClient) => {
-  // @ts-ignore
-  global.prisma = prisma;
+    // @ts-ignore
+    global.prisma = prisma;
 };
+
 
 type ValuesOrFunctions<T> = {
   [key in keyof T]: T[key] | ((index: number) => T[key]);
@@ -104,22 +112,23 @@ function getInputForIndex<T>(index: number, input: Partial<ValuesOrFunctions<T>>
   return mappedInput;
 }
 
+
 /**
  * Makes a single Role object and returns it.
  *
  * \`\`\`ts
  * // pass no override and all the required Role values will be randomly generated for you
- * const randomRole = makeRole();
- *
+ * const randomRole = makeRole(); 
+ * 
  * // or pass an object to override any values
  * const customRole = makeRole({
- *   id: 'something',
+ *   id: 'something', 
  *   // pass any other Role fields here
  * })
  * \`\`\`
  */
 export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateInput {
-  return {
+  return { 
     id: override?.id ?? 'seeded_for_test_' + uuid(),
     optionalValue: override?.optionalValue ?? null,
     datetimeValue: override?.datetimeValue ?? faker.date.recent(),
@@ -131,10 +140,10 @@ export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateIn
     booleanValue: override?.booleanValue ?? false,
     jsonValue: override?.jsonValue ?? Prisma.JsonNull,
     optionalJsonValue: override?.optionalJsonValue ?? Prisma.JsonNull,
-    stringWithDefault: override?.stringWithDefault ?? 'default',
+    stringWithDefault: override?.stringWithDefault ?? \\"default\\",
     booleanWithDefault: override?.booleanWithDefault ?? true,
     dateWithNowDefault: override?.dateWithNowDefault ?? new Date(),
-  };
+  }
 }
 
 /**
@@ -142,11 +151,11 @@ export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateIn
  *
  * \`\`\`ts
  * // pass no override and all the required Role values will be randomly generated for you
- * const randomRole = await seedRole();
- *
+ * const randomRole = await seedRole(); 
+ * 
  * // or pass an object to override any values
  * const customRole = await seedRole({
- *   id: 'something',
+ *   id: 'something', 
  *   // pass any other Role fields here
  * })
  * \`\`\`
@@ -156,7 +165,7 @@ export async function seedRole(override?: Partial<Role>): Promise<Prisma.RoleUnc
 
   await getPrisma().role.create({ data });
 
-  return data;
+  return data
 }
 
 /**
@@ -178,13 +187,10 @@ export async function seedRole(override?: Partial<Role>): Promise<Prisma.RoleUnc
  * })
  * \`\`\`
  */
-export async function seedNRoles(
-  n: number,
-  override: Partial<ValuesOrFunctions<Role>> = {},
-): Promise<Prisma.RoleUncheckedCreateInput[]> {
+export async function seedNRoles(n: number, override: Partial<ValuesOrFunctions<Role>> = {}): Promise<Prisma.RoleUncheckedCreateInput[]> {
   const data = Array(n)
-    .fill(null)
-    .map((_, i) => makeRole(getInputForIndex(i, override)));
+                .fill(null)
+                .map((_, i) => makeRole(getInputForIndex(i, override)));
 
   await getPrisma().role.createMany({ data });
 
@@ -202,9 +208,9 @@ export async function seedNRoles(
  * \`\`\`
  */
 export async function deleteSeededRoles(): Promise<void> {
-  // performs a cascading delete
+  // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await getPrisma().$executeRaw\`'DELETE FROM "Role" where id LIKE \\'seeded_for_test_%\\''\`;
+  await getPrisma().$executeRaw\`'DELETE FROM \\"Role\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
 }
 
 /**
@@ -212,22 +218,22 @@ export async function deleteSeededRoles(): Promise<void> {
  *
  * \`\`\`ts
  * // pass no override and all the required User values will be randomly generated for you
- * const randomUser = makeUser();
- *
+ * const randomUser = makeUser(); 
+ * 
  * // or pass an object to override any values
  * const customUser = makeUser({
- *   id: 'something',
+ *   id: 'something', 
  *   // pass any other User fields here
  * })
  * \`\`\`
  */
 export function makeUser(override?: Partial<User>): Prisma.UserUncheckedCreateInput {
-  return {
+  return { 
     id: override?.id ?? 'seeded_for_test_' + uuid(),
     email: override?.email ?? faker.lorem.word(),
     password: override?.password ?? faker.lorem.word(),
     role_id: override?.role_id ?? faker.lorem.word(),
-  };
+  }
 }
 
 /**
@@ -235,11 +241,11 @@ export function makeUser(override?: Partial<User>): Prisma.UserUncheckedCreateIn
  *
  * \`\`\`ts
  * // pass no override and all the required User values will be randomly generated for you
- * const randomUser = await seedUser();
- *
+ * const randomUser = await seedUser(); 
+ * 
  * // or pass an object to override any values
  * const customUser = await seedUser({
- *   id: 'something',
+ *   id: 'something', 
  *   // pass any other User fields here
  * })
  * \`\`\`
@@ -249,7 +255,7 @@ export async function seedUser(override?: Partial<User>): Promise<Prisma.UserUnc
 
   await getPrisma().user.create({ data });
 
-  return data;
+  return data
 }
 
 /**
@@ -271,13 +277,10 @@ export async function seedUser(override?: Partial<User>): Promise<Prisma.UserUnc
  * })
  * \`\`\`
  */
-export async function seedNUsers(
-  n: number,
-  override: Partial<ValuesOrFunctions<User>> = {},
-): Promise<Prisma.UserUncheckedCreateInput[]> {
+export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<User>> = {}): Promise<Prisma.UserUncheckedCreateInput[]> {
   const data = Array(n)
-    .fill(null)
-    .map((_, i) => makeUser(getInputForIndex(i, override)));
+                .fill(null)
+                .map((_, i) => makeUser(getInputForIndex(i, override)));
 
   await getPrisma().user.createMany({ data });
 
@@ -295,9 +298,9 @@ export async function seedNUsers(
  * \`\`\`
  */
 export async function deleteSeededUsers(): Promise<void> {
-  // performs a cascading delete
+  // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await getPrisma().$executeRaw\`'DELETE FROM "User" where id LIKE \\'seeded_for_test_%\\''\`;
+  await getPrisma().$executeRaw\`'DELETE FROM \\"User\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
 }
 "
 `;

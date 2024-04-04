@@ -21,7 +21,6 @@
     "@prisma/generator-helper": "5.9.1",
     "@prisma/sdk": "4.0.0",
     "@types/node": "20.11.16",
-    "@types/prettier": "3.0.0",
     "nunjucks": "3.2.4",
     "prettier": "3.2.5"
   },
