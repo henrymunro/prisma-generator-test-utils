@@ -46,12 +46,11 @@ generatorHandler({
 
       await writeTSFile(
         'index.ts',
-        `
-      // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+        `// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-      export * from './seed';
-      export * from './mockClient';
-      `,
+export * from './seed';
+export * from './mockClient';
+`,
       );
     } catch (e) {
       console.error('Error: unable to write files for Prisma Schema Generator');

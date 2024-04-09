@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`It generates __testing__/prisma-generated/index.ts matching the snapshot 1`] = `
-"
-      // WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
+"// WARNING: This is an auto generated file. Do not updated it directly, your changes will be lost.
 
-      export * from './seed';
-      export * from './mockClient';
-      "
+export * from './seed';
+export * from './mockClient';
+"
 `;
 
 exports[`It generates __testing__/prisma-generated/mockClient.ts matching the snapshot 1`] = `
