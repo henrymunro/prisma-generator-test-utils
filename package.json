@@ -18,11 +18,11 @@
     "publish": "yarn build && yarn release && git push --follow-tags origin main && npm publish"
   },
   "dependencies": {
-    "@prisma/generator-helper": "5.9.1",
-    "@prisma/sdk": "4.0.0",
-    "@types/node": "20.11.16",
-    "nunjucks": "3.2.4",
-    "prettier": "3.2.5"
+    "@prisma/generator-helper": "^5.12.0",
+    "@prisma/internals": "^5.12.1",
+    "@types/node": "^20.11.16",
+    "nunjucks": "^3.2.4",
+    "prettier": "^3.2.5"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

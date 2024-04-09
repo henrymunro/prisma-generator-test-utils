@@ -80,7 +80,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { v4 as uuid } from 'uuid';
 
-// Reuse client wherever possible. Without this when running tests in watch mode you can end up with \\"FATAL: sorry, too many clients already\\" failures  
+// Reuse client wherever possible. Without this when running tests in watch mode you can end up with "FATAL: sorry, too many clients already" failures  
 const getPrisma = (): PrismaClient =>
     // @ts-ignore
     global.prisma || (global.prisma = new PrismaClient());
@@ -140,7 +140,7 @@ export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateIn
     booleanValue: override?.booleanValue ?? false,
     jsonValue: override?.jsonValue ?? Prisma.JsonNull,
     optionalJsonValue: override?.optionalJsonValue ?? Prisma.JsonNull,
-    stringWithDefault: override?.stringWithDefault ?? \\"default\\",
+    stringWithDefault: override?.stringWithDefault ?? "default",
     booleanWithDefault: override?.booleanWithDefault ?? true,
     dateWithNowDefault: override?.dateWithNowDefault ?? new Date(),
   }
@@ -210,7 +210,7 @@ export async function seedNRoles(n: number, override: Partial<ValuesOrFunctions<
 export async function deleteSeededRoles(): Promise<void> {
   // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await getPrisma().$executeRaw\`'DELETE FROM \\"Role\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
+  await getPrisma().$executeRaw\`'DELETE FROM "Role" where id LIKE \\'seeded_for_test_%\\''\`; 
 }
 
 /**
@@ -300,7 +300,7 @@ export async function seedNUsers(n: number, override: Partial<ValuesOrFunctions<
 export async function deleteSeededUsers(): Promise<void> {
   // performs a cascading delete 
   // the prisma client doesn't do this at the moment (but is due to be added in a future release)
-  await getPrisma().$executeRaw\`'DELETE FROM \\"User\\" where id LIKE \\\\'seeded_for_test_%\\\\''\`; 
+  await getPrisma().$executeRaw\`'DELETE FROM "User" where id LIKE \\'seeded_for_test_%\\''\`; 
 }
 "
 `;

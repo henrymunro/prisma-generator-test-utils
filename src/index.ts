@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { generatorHandler } from '@prisma/generator-helper';
-import { parseEnvValue } from '@prisma/sdk';
+import { parseEnvValue } from '@prisma/internals';
 import fs from 'fs';
 import path from 'path';
 
