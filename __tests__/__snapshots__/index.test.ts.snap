@@ -131,7 +131,7 @@ export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateIn
     id: override?.id ?? 'seeded_for_test_' + uuid(),
     optionalValue: override?.optionalValue ?? null,
     datetimeValue: override?.datetimeValue ?? faker.date.recent(),
-    intValue: override?.intValue ?? faker.number.int(),
+    intValue: override?.intValue ?? faker.number.int({ max: 2147483646 }),
     stringValue: override?.stringValue ?? faker.lorem.word(),
     enumValue: override?.enumValue ?? RoleType.ADMIN,
     decimalValue: override?.decimalValue ?? new Prisma.Decimal(10),

@@ -12,7 +12,7 @@ type OnEnumUsed = (enumName: string) => void;
 
 const fakerMap = {
   String: 'faker.lorem.word()',
-  Int: 'faker.number.int()',
+  Int: 'faker.number.int({ max: 2147483646 })',
   DateTime: 'faker.date.recent()',
   Boolean: 'false',
   Decimal: 'new Prisma.Decimal(10)',
