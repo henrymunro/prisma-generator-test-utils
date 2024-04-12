@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.43](https://github.com/henrymunro/prisma-generator-test-utils/compare/v0.0.42...v0.0.43) (2024-04-12)
+
 ### [0.0.39](https://github.com/henrymunro/prisma-generator-test-utils/compare/v0.0.38...v0.0.39) (2024-04-09)
 
 
