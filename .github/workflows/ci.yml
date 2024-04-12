@@ -35,12 +35,23 @@ jobs:
       - name: Publish to npm on main
         if: github.ref == 'refs/heads/main'
         run: |
+            echo "configuring git"
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
+            
+            echo "Npm verion"
             npm version patch
+
+            echo "Publishing to npm"
             npm publish
+
+            echo "Comitting to git"
             git commit -am "[chore] Bump version"
+
+            echo "Pushing to git"
             git push
+
+            echo "Pushing tags to git"
             git push origin --tags
         env:
             NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
