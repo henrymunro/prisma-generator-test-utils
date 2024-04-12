@@ -39,8 +39,8 @@ jobs:
             git config --local user.name "GitHub Action"
             npm version patch
             npm publish
-            # git commit -m "[chore] Bump version"
-            # git push
-            # git push origin --tags
+            git commit -am "[chore] Bump version"
+            git push
+            git push origin --tags
         env:
             NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
