@@ -14,8 +14,7 @@
     "lint:eslint": "eslint --ext .ts,.js --cache --ignore-path .eslintignore .",
     "release": "standard-version --releaseCommitMessageFormat \"chore(release): {{currentTag}} [ci skip]\"",
     "test:unit": "jest --projects jest_config/unit.config.js",
-    "test:integration": "jest --projects jest_config/integration.config.js",
-    "publish": "yarn build && yarn release && git push --follow-tags origin main"
+    "test:integration": "jest --projects jest_config/integration.config.js"
   },
   "dependencies": {
     "@prisma/generator-helper": "^5.12.0",
