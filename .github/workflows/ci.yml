@@ -45,9 +45,6 @@ jobs:
             echo "Publishing to npm"
             npm publish
 
-            echo "Comitting to git"
-            git commit -am "[chore] Bump version"
-
             echo "Pushing to git"
             git push
 
