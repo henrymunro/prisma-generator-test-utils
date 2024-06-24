@@ -132,7 +132,7 @@ export function makeRole(override?: Partial<Role>): Prisma.RoleUncheckedCreateIn
     optionalValue: override?.optionalValue ?? null,
     datetimeValue: override?.datetimeValue ?? faker.date.recent(),
     intValue: override?.intValue ?? faker.number.int({ max: 2147483646 }),
-    stringValue: override?.stringValue ?? faker.lorem.word(),
+    stringValue: override?.stringValue ?? faker.lorem.words(3),
     enumValue: override?.enumValue ?? RoleType.ADMIN,
     decimalValue: override?.decimalValue ?? new Prisma.Decimal(10),
     floatValue: override?.floatValue ?? faker.number.float(),
@@ -229,9 +229,9 @@ export async function deleteSeededRoles(): Promise<void> {
 export function makeUser(override?: Partial<User>): Prisma.UserUncheckedCreateInput {
   return { 
     id: override?.id ?? 'seeded_for_test_' + uuid(),
-    email: override?.email ?? faker.lorem.word(),
-    password: override?.password ?? faker.lorem.word(),
-    role_id: override?.role_id ?? faker.lorem.word(),
+    email: override?.email ?? faker.lorem.words(3),
+    password: override?.password ?? faker.lorem.words(3),
+    role_id: override?.role_id ?? faker.lorem.words(3),
   }
 }
 

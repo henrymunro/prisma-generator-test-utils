@@ -11,7 +11,7 @@ function getFirstEnumValue(enums: Enums, enumName: string) {
 type OnEnumUsed = (enumName: string) => void;
 
 const fakerMap = {
-  String: 'faker.lorem.word()',
+  String: 'faker.lorem.words(3)',
   Int: 'faker.number.int({ max: 2147483646 })',
   DateTime: 'faker.date.recent()',
   Boolean: 'false',

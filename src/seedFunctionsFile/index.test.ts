@@ -99,7 +99,7 @@ describe('getDefaultingFunctionForField', () => {
       isRequired: true,
     } as DMMF.Field;
 
-    expect(getDefaultingFunctionForField(field, enums, onEnumUsed)).toBe('faker.lorem.word()');
+    expect(getDefaultingFunctionForField(field, enums, onEnumUsed)).toBe('faker.lorem.words(3)');
   });
 
   test('int fields default to faker number function', () => {
@@ -162,7 +162,7 @@ describe('assembleFunctionForModel', () => {
       name: 'User',
       values: [
         { name: 'id', defaulter: "'seeded_for_test_' + uuid()" },
-        { name: 'name', defaulter: 'faker.lorem.word()' },
+        { name: 'name', defaulter: 'faker.lorem.words(3)' },
       ],
     });
 
